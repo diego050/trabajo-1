@@ -172,8 +172,9 @@ def create_fake_data():
     
     db.session.commit()
     for a in range(5):
+        random_distrito = distrito.query.order_by(func.random()).first()
         new_hotel = hotel(
-            id_distrito=new_distrito.id_distrito,
+            id_distrito=random_distrito.id_distrito,
             n_habitaciones=fake.random_int(min=10, max=100),
             n_estrellas=fake.random_int(min=1, max=5)
         )
@@ -181,8 +182,9 @@ def create_fake_data():
     db.session.commit()
 
     for a in range(5):
+        random_hotel = hotel.query.order_by(func.random()).first()
         new_telefono = telefonoHotel(
-            id_hotel=new_hotel.id_hotel,
+            id_hotel=random_hotel.id_hotel,
             telefono_hotel=fake.phone_number()
         )
         db.session.add(new_telefono)
