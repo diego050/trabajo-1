@@ -624,8 +624,7 @@ def create_fake_data():
 # Crea las tablas
 with app.app_context():
     db.create_all()
-    if hotel.query.count() == 0:
-        create_fake_data()
+    create_fake_data()
 
 @app.route("/")
 def home():
