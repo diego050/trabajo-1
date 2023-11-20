@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import func
 from faker import Faker
@@ -164,14 +164,40 @@ class reservacion(db.Model):
 
 #crea datos falsos
 def create_fake_data():
-    for a in range(5):
+    cant_distrito = 5
+    cant_hotel = 5
+    cant_telefono = 5
+    cant_tipo_trabajo = 5
+    cant_personal = 5
+    cant_trabaja = 5
+    cant_asistencia = 5
+    cant_servicio = 5
+    cant_labora = 5
+    cant_ofrece = 5
+    cant_cliente = 5
+    cant_pide = 5
+    cant_acompañante = 5
+    cant_hospedaje = 5
+    cant_calificacion = 5
+    cant_tipohabitacion = 5
+    cant_habitacion = 5
+    cant_empresa = 5
+    cant_producto = 5
+    cant_comercializcion = 5
+    cant_provee = 5
+    cant_trabaja = 5
+    cant_reservacion = 5
+
+    #tabla distrito
+    for a in range(cant_distrito):
         new_distrito = distrito(
             nombre_distrito=fake.city() + ' District'
         )
         db.session.add(new_distrito)
-    
     db.session.commit()
-    for a in range(5):
+
+    #tabla hotel
+    for a in range(cant_hotel):
         random_distrito = distrito.query.order_by(func.random()).first()
         new_hotel = hotel(
             id_distrito=random_distrito.id_distrito,
@@ -181,7 +207,8 @@ def create_fake_data():
         db.session.add(new_hotel)
     db.session.commit()
 
-    for a in range(5):
+    #tabla telefono_hotel
+    for a in range(cant_telefono):
         random_hotel = hotel.query.order_by(func.random()).first()
         new_telefono = telefonoHotel(
             id_hotel=random_hotel.id_hotel,
@@ -190,26 +217,29 @@ def create_fake_data():
         db.session.add(new_telefono)
     db.session.commit()
     
-    for a in range(10):
+    #tabla tipo_trabajo
+    for a in range(cant_tipo_trabajo):
         new_tipo_trabajo = tipo_trabajo(
             nombre_tipo=fake.job()
         )
         db.session.add(new_tipo_trabajo)
     db.session.commit()
 
-    for a in range(20):
+    #tabla personal
+    for a in range(cant_personal):
         new_personal = personal(
             dni_personal=fake.unique.random_number(digits=8),
             nombre_personal=fake.first_name(),
             apellido_personal=fake.last_name(),
             sueldo=fake.random_int(min=20000, max=80000),
             fecha_contratacion=fake.date_between(start_date='-5y', end_date='today'),
-            id_tipo=fake.random_int(min=1, max=10)  # Asociamos a uno de los 10 tipos de trabajo
+            id_tipo=fake.random_int(min=1, max=cant_tipo_trabajo)  # Asociamos a uno de los 10 tipos de trabajo
         )
         db.session.add(new_personal)
     db.session.commit()
 
-    for a in range(15):
+    #relacion trabaja
+    for a in range(cant_trabaja):
         # Selecciona un hotel y un trabajador de manera aleatoria
         random_hotel = hotel.query.order_by(func.random()).first()
         random_personal = personal.query.order_by(func.random()).first()
@@ -229,7 +259,8 @@ def create_fake_data():
         db.session.add(nueva_asociacion)
     db.session.commit()
 
-    for a in range(30):
+    #tabla asistencia
+    for a in range(cant_asistencia):
         # Selecciona un trabajador de manera aleatoria
         random_personal = personal.query.order_by(func.random()).first()
 
@@ -249,7 +280,8 @@ def create_fake_data():
         db.session.add(nueva_asistencia)
     db.session.commit()
 
-    for a in range(15):
+    #tabla servicio
+    for a in range(cant_servicio):
         # Genera nombres de servicios y precios aleatorios
         nombre_servicio = fake.word()
         precio = fake.random_int(min=5, max=100)
@@ -263,7 +295,8 @@ def create_fake_data():
         db.session.add(nuevo_servicio)
     db.session.commit()
 
-    for a in range(15):
+    #relacion labora
+    for a in range(cant_labora):
         # Selecciona un servicio y personal de manera aleatoria
         random_servicio = servicio.query.order_by(func.random()).first()
         random_personal = personal.query.order_by(func.random()).first()
@@ -283,7 +316,8 @@ def create_fake_data():
         db.session.add(nueva_asociacion)
     db.session.commit()
 
-    for a in range(20):
+    #tabla ofrece
+    for a in range(cant_ofrece):
         # Selecciona un servicio, un hotel y una fecha aleatoria
         random_servicio = servicio.query.order_by(func.random()).first()
         random_hotel = hotel.query.order_by(func.random()).first()
@@ -306,7 +340,8 @@ def create_fake_data():
             db.session.add(nueva_asociacion)
     db.session.commit()
 
-    for a in range(15):
+    #tabla cliente
+    for a in range(cant_cliente):
         # Genera datos aleatorios para el cliente
         dni_cliente = fake.unique.random_number(digits=8)
         edad = fake.random_int(min=18, max=80)
@@ -330,7 +365,8 @@ def create_fake_data():
         db.session.add(nuevo_cliente)
     db.session.commit()
 
-    for a in range(20):
+    #relacion pide
+    for a in range(cant_pide):
         # Selecciona un servicio y un cliente de manera aleatoria
         random_servicio = servicio.query.order_by(func.random()).first()
         random_cliente = cliente.query.order_by(func.random()).first()
@@ -350,7 +386,8 @@ def create_fake_data():
             db.session.add(nueva_asociacion)
     db.session.commit()
 
-    for a in range(15):
+    #tabla acompañante
+    for a in range(cant_acompañante):
         # Selecciona un cliente de manera aleatoria
         random_cliente = cliente.query.order_by(func.random()).first()
 
@@ -372,7 +409,8 @@ def create_fake_data():
         db.session.add(nuevo_acompañante)
     db.session.commit()
 
-    for a in range(20):
+    #tabla hospedaje
+    for a in range(cant_hospedaje):
         # Selecciona un cliente, un acompañante y un hotel de manera aleatoria
         random_cliente = cliente.query.order_by(func.random()).first()
         random_acompañante = acompañante.query.order_by(func.random()).first()
@@ -395,30 +433,8 @@ def create_fake_data():
             db.session.add(nuevo_hospedaje)
     db.session.commit()
 
-    for a in range(20):
-        # Selecciona un cliente, un acompañante y un hotel de manera aleatoria
-        random_cliente = cliente.query.order_by(func.random()).first()
-        random_acompañante = acompañante.query.order_by(func.random()).first()
-        random_hotel = hotel.query.order_by(func.random()).first()
-
-        # Verifica si el hospedaje ya existe
-        hospedaje_existente = hospedaje.query.filter_by(
-            dni_cliente=random_cliente.dni_cliente,
-            dni_acompañante=random_acompañante.dni_acompañante,
-            id_hotel=random_hotel.id_hotel
-        ).first()
-
-        # Si el hospedaje no existe, crea uno nuevo
-        if not hospedaje_existente:
-            nuevo_hospedaje = hospedaje(
-                dni_cliente=random_cliente.dni_cliente,
-                dni_acompañante=random_acompañante.dni_acompañante,
-                id_hotel=random_hotel.id_hotel
-            )
-            db.session.add(nuevo_hospedaje)
-    db.session.commit()
-
-    for a in range(15):
+    #tabla calificacion
+    for a in range(cant_calificacion):
         # Selecciona un cliente y un hotel de manera aleatoria
         random_cliente = cliente.query.order_by(func.random()).first()
         random_hotel = hotel.query.order_by(func.random()).first()
@@ -440,7 +456,8 @@ def create_fake_data():
             db.session.add(nueva_calificacion)
     db.session.commit()
 
-    for a in range(10):
+    #tabla tipohabitacion
+    for a in range(cant_tipohabitacion):
         # Genera datos aleatorios para el tipo de habitación
         tipo_habitacion = fake.word()
         n_camas_habitacion = fake.random_int(min=1, max=4)
@@ -456,7 +473,8 @@ def create_fake_data():
         db.session.add(nuevo_tipo_habitacion)
     db.session.commit()
 
-    for a in range(30):
+    #tabla habitacion
+    for a in range(cant_habitacion):
         # Selecciona un hotel y un tipo de habitación de manera aleatoria
         random_hotel = hotel.query.order_by(func.random()).first()
         random_tipo_habitacion = tipohabitacion.query.order_by(func.random()).first()
@@ -479,7 +497,8 @@ def create_fake_data():
             db.session.add(nueva_habitacion)
     db.session.commit()
 
-    for a in range(5):
+    #tabla empresa
+    for a in range(cant_empresa):
         # Genera datos aleatorios para la empresa
         ruc_empresa = fake.unique.random_number(digits=11)
         nombre_empresa = fake.company()
@@ -497,7 +516,8 @@ def create_fake_data():
         db.session.add(nueva_empresa)
     db.session.commit()
 
-    for a in range(15):
+    #descripcion producto
+    for a in range(cant_producto):
         # Genera datos aleatorios para el producto
         nombre_producto = fake.word()
         descripcion_producto = fake.text(max_nb_chars=150)
@@ -511,21 +531,8 @@ def create_fake_data():
         db.session.add(nuevo_producto)
     db.session.commit()
 
-    for a in range(15):
-        # Genera datos aleatorios para el producto
-        nombre_producto = fake.word()
-        descripcion_producto = fake.text(max_nb_chars=150)
-
-        # Crea un nuevo producto
-        nuevo_producto = producto(
-            nombre_producto=nombre_producto,
-            descripcion=descripcion_producto
-        )
-
-        db.session.add(nuevo_producto)
-    db.session.commit()
-
-    for a in range(20):
+    #relacion comercializacion
+    for a in range(cant_comercializcion):
         # Selecciona un producto y una empresa de manera aleatoria
         random_producto = producto.query.order_by(func.random()).first()
         random_empresa = empresa.query.order_by(func.random()).first()
@@ -545,7 +552,8 @@ def create_fake_data():
             db.session.add(nueva_comercializa)
     db.session.commit()
 
-    for a in range(15):
+    #relacion provee
+    for a in range(cant_provee):
         # Selecciona una fecha de entrega aleatoria
         fecha_entrega = fake.date_this_decade()
 
@@ -569,7 +577,8 @@ def create_fake_data():
             db.session.add(nueva_provee)
     db.session.commit()
 
-    for a in range(15):
+    #relacion trabaja
+    for a in range(cant_trabaja):
         # Selecciona un hotel y un trabajador de manera aleatoria
         random_hotel = hotel.query.order_by(func.random()).first()
         random_personal = personal.query.order_by(func.random()).first()
@@ -589,7 +598,8 @@ def create_fake_data():
         db.session.add(nueva_asociacion)
     db.session.commit()
 
-    for _ in range(20):
+    #relacion reservacion
+    for a in range(cant_reservacion):
         random_id_habitacion = habitacion.query.order_by(func.random()).first()
         random_dni_cliente = cliente.query.order_by(func.random()).first()
         fecha_reservada = fake.date_between(start_date='today', end_date='+30y')
@@ -614,11 +624,26 @@ def create_fake_data():
 # Crea las tablas
 with app.app_context():
     db.create_all()
-    create_fake_data()
+    if hotel.query.count() == 0:
+        create_fake_data()
 
 @app.route("/")
 def home():
     return render_template("home.html")
+
+@app.route('/insertar_datos', methods=['POST'])
+def insertar_datos():
+    if request.method == 'POST':
+        id_habitacion = request.form['id_habitacion']
+        dni_cliente = request.form['dni_cliente']
+        fecha_reservada = datetime.strptime(request.form['fecha_reservada'], '%Y-%m-%d').date()
+
+        nuevo_dato = reservacion(id_habitacion=id_habitacion, dni_cliente=dni_cliente, fecha_reservada=fecha_reservada)
+
+        db.session.add(nuevo_dato)
+        db.session.commit()
+
+        return "Datos insertados correctamente"
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
